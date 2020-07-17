@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/axios/dist/axios.min.js"></script>
+    <title>Spinner</title>
+
+    <style>
+        .container {
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .content-wrap {
+            margin-top: 5rem;
+        }
+
+        #spinner {
+            display: none;
+        }
+
+        #list {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="button-wrap">
+            <button type="button" class="btn btn-primary">Primary</button>
+            <button type="button" class="btn btn-secondary">Secondary</button>
+            <button type="button" class="btn btn-success">Success</button>
+            <button type="button" class="btn btn-danger">Danger</button>
+
+        </div>
+        <div class="content-wrap">
+            <ul id="list">
+
+            </ul>
+            <div class="spinner-border text-success" id="spinner" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        // const btn = document.querySelector("btn-primary")
+        // btn.addEventListener('click', () => {
+        //     const spinner = document.querySelector("#spinner");
+        //     spinner.style.display = 'block';
+        // })
+
+        // $(".btn").click(function () {
+        //     $("#spinner").show();
+        //데이터를 불러오고
+        //불러오는 동안 
+        //데이터가 불러와지면 
+        //스피너를 안보이게
+        // setTimeout(function () {
+
+        // }, 3000);
+
+
+        //제이쿼리ver
+        //     axios.get('http://f167936ba670.ngrok.io/api/schedule')
+        //         .then(function (response) { //데이터를 받고
+        //             // console.log(response); 수시로 찍어보기
+        //             const schedule = response.data.schedules;
+        //             // const list = document.querySelector("#list");
+
+        //             schedule.forEach((result) => {
+        //                 console.log(result);
+
+
+
+        //                 $("#list").show().append(
+        //                     `<li>할일 : ${result.name}, 일시 : ${result.date}</li>`) //이부분을 함수주어 할수도 있다.
+        //             });
+        //             //     $("삽입할 장소").show().append(`할일 : ${result.name}, 일시 : ${result.date}`)
+        //             // });
+
+
+        //             // $("#list").show().append('<li>공부</li>')
+        //             //schedule > 반복문 -> if -> append 
+        //             //text -> 할일 : ***, 일시 :****
+
+        //             $("#spinner").hide(); //숨기고
+        //             console.log(response);s
+        //         })
+        //         .catch(function (error) {
+
+        //             console.log(error);
+        //         })
+
+        // });
+
+
+
+        //JS ver
+
+        const btn = document.querySelector(".btn-primary")
+        btn.addEventListener('click', function () {
+            const spinner = document.querySelector("#spinner")
+            spinner.style.display = 'block'
+            axios.get('http://2cf56f10b46a.ngrok.io/api/schedule')
+                .then(function (response) {
+                    const ul = document.querySelector("#list")
+                    const schedules = response.data.schedules
+                    schedules.forEach((item) => {
+                        const li = document.createElement('li')
+                        const txt = document.createTextNode(`할일 ${item.name}, 날짜 ${item.date}`)
+                        li.appendChild(txt)
+                        ul.appendChild(li)
+                    })
+                    ul.style.display = 'block'
+                    spinner.style.display = 'block'
+
+
+                    $("#spinner").hide();
+
+                })
+                .catch(function (error) {
+
+                    console.log(error);
+                })
+
+        })
+    </script>
+
+</body>
+
+</html>
